@@ -71,6 +71,7 @@ class API
         if (($sendthrough = static::getRandomPlayer()) != null) {
             $packet = new ScriptCustomEventPacket();
             $packet->eventName = "bungeecord:main";
+            $packet->eventData = "";
             ProtocolUtils::writeString("Message", $packet->eventData);
             ProtocolUtils::writeString($player, $packet->eventData);
             ProtocolUtils::writeString($message, $packet->eventData);
