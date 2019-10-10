@@ -30,7 +30,7 @@ class StringStream
             // read first two length bytes
             $length = Binary::readShort($this->buffer{$this->pointer} . $this->buffer{$this->pointer + 1});
             // add 2 to pointer
-            $this->pointer += 2;
+            $this->changePointer($this->pointer + 2);
             // read length bytes far and append to string
             $d = "";
             for ($i = $this->pointer; $i < $this->pointer + $length; $i++) {
@@ -56,10 +56,16 @@ class StringStream
         }
     }
 
+    public function changePointer(int $newpointer)
+    {
+        MainLogger::getLogger()->debug("Changed pointer from " . $this->pointer . " to " . $newpointer);
+        $this->pointer = $newpointer;
+    }
     public function readUnsignedShort(): ?int {
         try{
             return Binary::readUnsignedVarInt($this->buffer, $this->pointer);
         }catch (Exception $e) {
+            var_dump("Target Buffer: " . $this->buffer);
             MainLogger::getLogger()->warning("Error while decoding unsignedShort: " . $this->buffer . " ( " . $e->getMessage() . ", LINE: " . $e->getLine() . " )");
             return null;
         }

@@ -71,6 +71,7 @@ class API
         if (($sendthrough = static::getRandomPlayer()) != null) {
             $packet = new ScriptCustomEventPacket();
             $packet->eventName = "bungeecord:main";
+            $packet->eventData = "";
             ProtocolUtils::writeString("Message", $packet->eventData);
             ProtocolUtils::writeString($player, $packet->eventData);
             ProtocolUtils::writeString($message, $packet->eventData);
@@ -80,6 +81,21 @@ class API
             Server::getInstance()->getLogger()->warning("Cannot execute API::sendMessage(): No Player online for abusing");
             return false;
         }
+    }
+
+    public static function alignMessage(array $lines): ?string
+    {
+        $stickWith = max(array_map('strlen', $lines));
+        $output = "";
+        foreach ($lines as $line) {
+            $diff = round(($stickWith - strlen($line)) / 2);
+
+            if ($diff !== 0) $line = str_repeat(" ", $diff) . $line;
+
+            $output .= "{$line}\n";
+        }
+
+        return $output;
     }
 
     public static function getRandomPlayer(): ?Player
