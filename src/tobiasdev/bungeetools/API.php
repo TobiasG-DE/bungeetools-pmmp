@@ -83,21 +83,6 @@ class API
         }
     }
 
-    public static function alignMessage(array $lines): ?string
-    {
-        $stickWith = max(array_map('strlen', $lines));
-        $output = "";
-        foreach ($lines as $line) {
-            $diff = round(($stickWith - strlen($line)) / 2);
-
-            if ($diff !== 0) $line = str_repeat(" ", $diff) . $line;
-
-            $output .= "{$line}\n";
-        }
-
-        return $output;
-    }
-
     public static function getRandomPlayer(): ?Player
     {
         if (count(Server::getInstance()->getOnlinePlayers()) > 0) {
