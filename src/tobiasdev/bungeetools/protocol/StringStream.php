@@ -36,7 +36,7 @@ class StringStream
             for ($i = $this->pointer; $i < $this->pointer + $length; $i++) {
                 $d .= $this->buffer{$i};
             }
-            $this->changePointer($this->pointer + $length);
+            $this->pointer += $length;
             return $d;
         } catch (Exception $e) {
             MainLogger::getLogger()->warning("Error while decoding string: " . $this->buffer . " ( " . $e->getMessage() . ", LINE: " . $e->getLine() . " )");
@@ -51,7 +51,6 @@ class StringStream
             $offset = $this->pointer;
             return Binary::readInt($this->buffer{$offset} . $this->buffer{$offset + 1} . $this->buffer{$offset + 2} . $this->buffer{$offset + 3});
         } catch (Exception $e) {
-            var_dump("Target Buffer: " . $this->buffer);
             MainLogger::getLogger()->warning("Error while decoding int: " . $this->buffer . " ( " . $e->getMessage() . ", LINE: " . $e->getLine() . " )");
             return null;
         }
