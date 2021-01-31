@@ -28,13 +28,13 @@ class StringStream
     {
         try {
             // read first two length bytes
-            $length = Binary::readShort($this->buffer{$this->pointer} . $this->buffer{$this->pointer + 1});
+            $length = Binary::readShort($this->buffer[$this->pointer] . $this->buffer[$this->pointer + 1]);
             // add 2 to pointer
             $this->changePointer($this->pointer + 2);
             // read length bytes far and append to string
             $d = "";
             for ($i = $this->pointer; $i < $this->pointer + $length; $i++) {
-                $d .= $this->buffer{$i};
+                $d .= $this->buffer[$i];
             }
             $this->pointer += $length;
             return $d;
@@ -49,7 +49,7 @@ class StringStream
     {
         try {
             $offset = $this->pointer;
-            return Binary::readInt($this->buffer{$offset} . $this->buffer{$offset + 1} . $this->buffer{$offset + 2} . $this->buffer{$offset + 3});
+            return Binary::readInt($this->buffer[$offset] . $this->buffer[$offset + 1] . $this->buffer[$offset + 2] . $this->buffer[$offset + 3]);
         } catch (Exception $e) {
             MainLogger::getLogger()->warning("Error while decoding int: " . $this->buffer . " ( " . $e->getMessage() . ", LINE: " . $e->getLine() . " )");
             return null;
